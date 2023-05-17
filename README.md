@@ -9,3 +9,4 @@ https://velog.io/@jonghyun3668/SpringBoot-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-E
 
 - aws rds mysql 생성
 https://www.youtube.com/watch?v=wdaMD6yQVh4
+https://velog.io/@u-nij/Spring-Boot-AWS-RDS-MySQL-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0
