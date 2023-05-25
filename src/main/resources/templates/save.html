@@ -5,6 +5,10 @@
     <title>save</title>
 </head>
 <body>
-ok?
+<form action="/image/save" method="post" enctype="multipart/form-data">
+    name: <input type="text" name="imageName"> <br>
+    file: <input type="file" name="imageFile"> <br>
+    <input type="submit" value="이미지작성">
+</form>
 </body>
 </html>
