@@ -9,7 +9,7 @@
     <tr>
         <th>id</th>
         <th>title</th>
-        <th>title(||쓰지 않은 경우)</th>
+<!--        <th>title(||쓰지 않은 경우)</th>-->
         <th>writer</th>
         <th>date</th>
         <th>hits</th>
@@ -18,7 +18,9 @@
     <tr th:each="board: ${boardList}">
         <td th:text="${board.id}"></td>
         <td><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></td>
-        <td><a th:href="@{/board/${board.id}}" th:text="${board.boardTitle}"></a></td>
+<!--        || 를 사용하지 않으면 주소창에 board의 아이디가 나오는것이 아니라 || 내부에 들어가는 텍스트가 그대로 나온다.  -->
+<!--        타임리프에서 지원하는 기능으로 주소창에 나오는 주소의 관리를 편리하게 할 수 있다.    -->
+<!--        <td><a th:href="@{/board/${board.id}}" th:text="${board.boardTitle}"></a></td>-->
         <td th:text="${board.boardWriter}"></td>
         <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
         <td th:text="${board.boardHits}"></td>
