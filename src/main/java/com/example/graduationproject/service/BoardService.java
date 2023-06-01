@@ -2,6 +2,8 @@ package com.example.graduationproject.service;
 
 import com.example.graduationproject.dto.BoardDTO;
 import com.example.graduationproject.entity.BoardEntity;
+import com.example.graduationproject.entity.BoardFileEntity;
+import com.example.graduationproject.repository.BoardFileRepository;
 import com.example.graduationproject.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,7 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,11 +30,43 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
-    public void save(BoardDTO boardDTO) {
-        BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
-        boardRepository.save(boardEntity);
+    private final BoardFileRepository boardFileRepository;
+    public void save(BoardDTO boardDTO) throws IOException {
+        if (boardDTO.getBoardFile().isEmpty()) {
+            BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
+            boardRepository.save(boardEntity);
+        } else {
+             /*
+                 1. DTO 에 담긴 파일을 꺼냄
+                 2. 파일의 이름을 가져옴
+                 3. 서버 저장용 이름을 만듬
+                 // 내사진.jpg -> 1359135_내사진.jpg
+                 4. 저장 경로 설정
+                 5. 해당 경로에 파일 저장
+                 6. board_table 에 해당 데이터 save
+                 7. board_file_table 에 해당 데이터 save 처리
+             */
+            BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
+            Long savedId = boardRepository.save(boardEntity).getId();
+            BoardEntity board = boardRepository.findById(savedId).get();
+            for (MultipartFile boardFile: boardDTO.getBoardFile()) {
+//                MultipartFile boardFile = boardDTO.getBoardFile();  // 1. 반복문으로 필요 없어짐
+                String originalFileName = boardFile.getOriginalFilename();  // 2.
+                String storedFileName = System.currentTimeMillis() + "_" + originalFileName;    // 3.
+                // 1997년 어쩌구부터 지금까지의 시간_파일명 겹치지 않게 하기 위해서
+
+                String savePath = "/Users/jiggy-ahn/Desktop/springboot_img/" + storedFileName;    // 4.
+                boardFile.transferTo(new File(savePath));   // 5.
+                // 예외가 발생할 수 있기 때문에 예외처리(Controller 에서도)
+
+                BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFileName, storedFileName);
+                boardFileRepository.save(boardFileEntity);
+            }
+        }
     }
 
+    // findById 와 동일한 이유에서 Transaction 어노테이션을 붙여줌
+    @Transactional
     public List<BoardDTO> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         List<BoardDTO> boardDTOList = new ArrayList<>();
@@ -44,6 +81,9 @@ public class BoardService {
         boardRepository.updateHits(id);
     }
 
+    // 부모 Entity 에서 자식 Entity 로 접근할 때 Transaction 을 붙여주어야 함
+    // findById 에서 BoardDTO 를 호출했는데 해당 객체 내부에서 boardEntity 가 boardFileEntity 로 접근하기 때문
+    @Transactional
     public BoardDTO findById(Long id) {
         Optional<BoardEntity> optionalBoardEntity =  boardRepository.findById(id);
         if (optionalBoardEntity.isPresent()) {

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -25,7 +26,7 @@ public class BoardController {
 
     // Get 과 Post 의 경우 주소가 같아도 오류가 발생하지 않는다 그러나 같은 어노테이션의 경우 주소가 같으면 오류가 발생한다.
     @PostMapping("/save")
-    public String save(@ModelAttribute BoardDTO boardDTO) {
+    public String save(@ModelAttribute BoardDTO boardDTO) throws IOException {
         System.out.print("boardDTO = " + boardDTO);
         boardService.save(boardDTO);
 
