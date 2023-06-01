@@ -26,6 +26,15 @@ public class BoardDTO {
     // 보통 이러한 클래스 객체를 만들면 필드를 주고 필드는 프라이빗으로 접근제한자를 둔다
     // 그러고 이 아래 보통 생성자나 게터세터를 둬서 필드값을 주고받는 형식을 많이 사용한다.
 
+
+    public BoardDTO(Long id, String boardWriter, String boardTitle, int boardHits, LocalDateTime boardCreatedTime) {
+        this.id = id;
+        this.boardWriter = boardWriter;
+        this.boardTitle = boardTitle;
+        this.boardHits = boardHits;
+        this.boardCreatedTime = boardCreatedTime;
+    }
+
     public static BoardDTO toBoardDTO(BoardEntity boardEntity) {
         BoardDTO boardDTO = new BoardDTO();
         boardDTO.setId(boardEntity.getId());

@@ -66,10 +66,28 @@ public class BoardService {
     }
 
     public Page<BoardDTO> paging(Pageable pageable) {
+        // 1을 빼주는 이유는 페이지 위치 값이 0 부터 시작하기 때문
         int page = pageable.getPageNumber() - 1;
         int pageLimit = 3;
+        // 1 페이지당 3개씩 글을 보여주고 정렬 기준은 id 기준으로 내림차순 정렬
+        // 페이지 위치에 있는 값은 0 부터 시작
         Page<BoardEntity> boardEntities =
         boardRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-        return null;
+        // properties 에 들어가는 값은 entity 에 있는 기준
+
+        // 페이지 객체로 생성하였기 때문에 아래의 메소드들을 통해 정보를 얻을 수 있다. 리스트 객체는 못함(페이징 처리만 할 수 있음)
+        System.out.println("boardEntities.getContent() = " + boardEntities.getContent()); // 요청 페이지에 해당하는 글
+        System.out.println("boardEntities.getTotalElements() = " + boardEntities.getTotalElements()); // 전체 글갯수
+        System.out.println("boardEntities.getNumber() = " + boardEntities.getNumber()); // DB로 요청한 페이지 번호
+        System.out.println("boardEntities.getTotalPages() = " + boardEntities.getTotalPages()); // 전체 페이지 갯수
+        System.out.println("boardEntities.getSize() = " + boardEntities.getSize()); // 한 페이지에 보여지는 글 갯수
+        System.out.println("boardEntities.hasPrevious() = " + boardEntities.hasPrevious()); // 이전 페이지 존재 여부
+        System.out.println("boardEntities.isFirst() = " + boardEntities.isFirst()); // 첫 페이지 여부
+        System.out.println("boardEntities.isLast() = " + boardEntities.isLast()); // 마지막 페이지 여부
+
+        // 목록: id, writer, title, hits, createTime
+        // 괄호 내부 board 는 Entity 객체 이고 map 함수의 역할로 DTO 객체로 바꿔주는 유용한 메서드이다.
+        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreateTime()));
+        return boardDTOS;
     }
 }
