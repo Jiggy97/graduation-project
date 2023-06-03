@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>list</title>
+</head>
+<body>
+<table>
+  <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>fileName</th>
+  </tr>
+  <!--    for each 와 같음   -->
+  <tr th:each="model: ${faceModelList}">
+    <td th:text="${model.id}"></td>
+    <td><a th:href="@{|/face/${model.id}|}" th:text="${model.name}"></a></td>
+  </tr>
+</table>
+</body>
+</html>
