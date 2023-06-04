@@ -5,17 +5,14 @@ import com.example.graduationproject.service.FaceModelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/face")
+@RequestMapping("/model")
 public class FaceModelController {
     private final FaceModelService faceModelService;
 
@@ -36,6 +33,13 @@ public class FaceModelController {
         List<FaceModelDTO> faceModelDTOList = faceModelService.findAll();
         model.addAttribute("faceModelList", faceModelDTOList);
         return "modelList";
+    }
+
+    @GetMapping("/{id}")
+    public String findById(@PathVariable Long id, Model model) {
+        FaceModelDTO faceModelDTO = faceModelService.findById(id);
+        model.addAttribute("model", faceModelDTO);
+        return "model-detail";
     }
 }
 

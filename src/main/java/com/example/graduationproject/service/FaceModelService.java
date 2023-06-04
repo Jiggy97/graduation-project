@@ -7,12 +7,14 @@ import com.example.graduationproject.repository.FaceModelFileRepository;
 import com.example.graduationproject.repository.FaceModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,5 +44,17 @@ public class FaceModelService {
             faceModelDTOList.add(FaceModelDTO.toFaceModelDTO(faceModelEntity));
         }
         return faceModelDTOList;
+    }
+
+    @Transactional
+    public FaceModelDTO findById(Long id) {
+        Optional<FaceModelEntity> optionalFaceModelEntity = faceModelRepository.findById(id);
+        if (optionalFaceModelEntity.isPresent()) {
+            FaceModelEntity faceModelEntity = optionalFaceModelEntity.get();
+            FaceModelDTO faceModelDTO = FaceModelDTO.toFaceModelDTO(faceModelEntity);
+            return faceModelDTO;
+        } else {
+            return null;
+        }
     }
 }
