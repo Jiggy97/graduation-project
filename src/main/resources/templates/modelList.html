@@ -14,7 +14,7 @@
   <!--    for each 와 같음   -->
   <tr th:each="model: ${faceModelList}">
     <td th:text="${model.id}"></td>
-    <td><a th:href="@{|/face/${model.id}|}" th:text="${model.name}"></a></td>
+    <td><a th:href="@{|/model/${model.id}|}" th:text="${model.name}"></a></td>
   </tr>
 </table>
 </body>
