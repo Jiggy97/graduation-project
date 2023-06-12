@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>update</title>
+</head>
+<body>
+<form action="/model/update" method="post" name="updateForm">
+  <input type="hidden" name="id" th:value="${updateDTO.id}">
+  name: <input type="text" name="modelName" th:value="${updateDTO.name}"> <br>
+  file: <input type="file" name="faceModelFile" multiple> <br>
+  <input type="submit" value="모델 수정">
+</form>
+</body>

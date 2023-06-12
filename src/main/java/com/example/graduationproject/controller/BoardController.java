@@ -68,7 +68,6 @@ public class BoardController {
         model.addAttribute("board", board);
 
         return "detail";
-
     }
 
     @GetMapping("/delete/{id}")

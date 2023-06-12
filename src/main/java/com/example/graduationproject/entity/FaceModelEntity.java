@@ -28,8 +28,16 @@ public class FaceModelEntity extends BaseEntity {
     public static FaceModelEntity toSaveEntity(FaceModelDTO faceModelDTO) {
         FaceModelEntity faceModelEntity = new FaceModelEntity();
         faceModelEntity.setName(faceModelDTO.getName());
-        faceModelEntity.setFileAttached(1);  // file 없음
+        faceModelEntity.setFileAttached(1);
 
+        return faceModelEntity;
+    }
+
+    public static FaceModelEntity toUpdateEntity(FaceModelDTO faceModelDTO) {
+        FaceModelEntity faceModelEntity = new FaceModelEntity();
+        faceModelEntity.setId(faceModelDTO.getId());
+        faceModelEntity.setName(faceModelDTO.getName());
+        faceModelEntity.setFileAttached(1);
         return faceModelEntity;
     }
 }

@@ -57,4 +57,21 @@ public class FaceModelService {
             return null;
         }
     }
+
+    public FaceModelDTO update(FaceModelDTO faceModelDTO) throws IOException {
+        FaceModelEntity faceModelEntity = FaceModelEntity.toUpdateEntity(faceModelDTO);
+        faceModelRepository.save(faceModelEntity);
+
+        for (MultipartFile faceModelFile : faceModelDTO.getFaceModelFile()) {
+            String originalFileName = faceModelFile.getOriginalFilename();
+            String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
+
+            String savePath = "/Users/jiggy-ahn/Desktop/face_ML_model/" + storedFileName;
+            faceModelFile.transferTo(new File(savePath));
+
+            FaceModelFileEntity faceModelFileEntity = FaceModelFileEntity.toFaceModelFileEntity(faceModelEntity, originalFileName, storedFileName);
+            faceModelFileRepository.save(faceModelFileEntity);
+        }
+        return findById(faceModelDTO.getId());
+    }
 }

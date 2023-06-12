@@ -25,7 +25,7 @@ public class FaceModelController {
     public String saveModel(@ModelAttribute FaceModelDTO faceModelDTO) throws IOException {
         faceModelService.save(faceModelDTO);
 
-        return "success-save-model";
+        return "index";
     }
 
     @GetMapping("/")
@@ -39,6 +39,21 @@ public class FaceModelController {
     public String findById(@PathVariable Long id, Model model) {
         FaceModelDTO faceModelDTO = faceModelService.findById(id);
         model.addAttribute("model", faceModelDTO);
+        return "model-detail";
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateForm(@PathVariable Long id, Model model) {
+        FaceModelDTO updateDTO = faceModelService.findById(id);
+        model.addAttribute("updateDTO", updateDTO);
+        return "modelUpdate";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute FaceModelDTO faceModelDTO, Model model) throws IOException {
+        FaceModelDTO faceModel = faceModelService.update(faceModelDTO);
+        model.addAttribute("model", faceModel);
+
         return "model-detail";
     }
 }
