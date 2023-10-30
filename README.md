@@ -10,7 +10,8 @@
 
 
 ## 프로젝트 아키텍쳐
-![[Pasted image 20231030111626.png]]
+<img src="https://github.com/Jiggy97/graduation-project/assets/79949843/33f94b0b-992d-4584-a02a-dad96169f6d6" width="1000" height="700">
+
 
 
 ## 적용 기술
