@@ -74,4 +74,8 @@ public class FaceModelService {
         }
         return findById(faceModelDTO.getId());
     }
+
+    public void delete(Long id) {
+        faceModelRepository.deleteById(id);
+    }
 }

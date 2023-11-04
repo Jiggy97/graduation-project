@@ -56,5 +56,13 @@ public class FaceModelController {
 
         return "model-detail";
     }
+
+    @DeleteMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, Model model) {
+        faceModelService.delete(id);
+
+        return "modelList";
+    }
+
 }
 
